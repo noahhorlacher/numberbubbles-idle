@@ -1,24 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Number Bubbles</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <meta charset='UTF-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>ナンバー バッブース</title>
+    <link rel='stylesheet' href='css/slider.css'>
+    <link rel='stylesheet' href='css/style.css'>
 </head>
+
 <body>
-    <h1>Number Bubbles</h1>
-    <canvas id="gameCanvas" width="600" height="600"></canvas><br><br>
-    <h2 id="tries"></h2>
-    <h2 class="fertig">Fertig</h2>
-    <label for="bounce">Bounce:</label>
-    <input type="range" id="bounce" max="100" min="0" value="80" oninput="changeValue()">
-    <label for="bounce" id="bounceValue"></label><br><br>
-    <label for="gravity">Gravitation:</label>
-    <input type="range" id="gravity" min="1" max="200" value="10" oninput="changeGravity()">
-    <label for="gravity" id="gravityValue"></label><br><br>
-    <button onclick="startGame()">Spielen</button>
-    <script src="./javascript/script.js"></script>
+    <h1>ナンバー バッブース</h1>
+    <game>
+        <screen value='1'>
+            <h2>Result</h2>
+            <p id='hits'><span class='score'>Hits:</span><span class='value'></span><span class='multiplier'></span></p>
+            <p id='streak'><span class='score'>Longest Streak:</span><span class='value'></span><span
+                    class='multiplier'></span></p>
+            <p id='left'><span class='score'>Balls Left:</span><span class='value'></span><span
+                    class='multiplier'></span></p>
+            <p id='total'><span class='score'>Total:</span><span class='value'></span><span class='multiplier'></span>
+            </p>
+            <btns>
+                <btn id='btn_to_upgrades'>To Upgrades</btn>
+            </btns>
+        </screen>
+        <screen value='2'>
+            <h2>Upgrades</h2>
+            <p>Points: <span id='points'></span></p>
+            <upgrades></upgrades>
+            <btns>
+                <btn id='btn_to_score'>Score</btn>
+                <btn id='btn_next_round'>Next Round</btn>
+            </btns>
+        </screen>
+    </game>
+    <br><br>
+    <btn id='reset'>リースタート</btn>
+    <script src='js/helpers.js'></script>
+    <script src='js/classes/upgrade.js'></script>
+    <script src='js/classes/range.js'></script>
+    <script src='js/game_variables.js'></script>
+    <script src='js/canvas.js'></script>
+    <script src='js/classes/vector.js'></script>
+    <script src='js/classes/circle.js'></script>
+    <script src='js/classes/bubble.js'></script>
+    <script src='js/classes/ball.js'></script>
+    <script src='js/number_bubbles.js'></script>
 </body>
+
 </html>
