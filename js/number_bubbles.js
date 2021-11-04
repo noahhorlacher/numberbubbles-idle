@@ -1,30 +1,34 @@
-let color_background = '#2D3047'
-let color_aim = '#FFFFFF66'
-
-// current screen
-// 0: game, 1: score, 2: upgrades
-let screen = 0
-let mouseX, mouseY
-
-// bubbles of this round
-let bubbles
-
-// fps
-let show_fps = false, fps, last_timestamp
-
-let wait_for_reset = false
-
 // initial function
 function setup() {
-    initialize_values()
+    // physics
+    gravity.reset()
+    bounce.reset()
 
-    // reset button
-    document.querySelector('#reset').addEventListener('click', reset)
+    // aiming
+    aim_radius.reset()
 
-    // screen 1 button
+    // balls
+    ball_amount.reset()
+    ball_radius.reset()
+
+    // bubbles
+    bubble_amount.reset()
+    bubble_radius_range.reset()
+    bubble_value_range.reset()
+
+    // multipliers
+    hits_multiplier.reset()
+    streak_multiplier.reset()
+    total_multiplier.reset()
+
+    // screen buttons
     document.querySelector('#btn_to_upgrades').addEventListener('click', e => switch_to_screen(2))
+
     document.querySelector('#btn_to_score').addEventListener('click', e => switch_to_screen(1))
     document.querySelector('#btn_next_round').addEventListener('click', e => switch_to_screen(0))
+
+    document.querySelector('#btn_restart').addEventListener('click', e => location.reload())
+    document.querySelector('#btn_continue').addEventListener('click', e => switch_to_screen(0))
 
     canvas.classList.add('canshoot')
 
@@ -46,47 +50,9 @@ function setup() {
     switch_to_screen(0)
 }
 
-// initialize/reset game variables
-function initialize_values() {
-    screen = 0
-    points = initial_points
-    round = 0
-
-    // physics
-    gravity.reset()
-    bounce.reset()
-
-    // aiming
-    aim_radius.reset()
-
-    // balls
-    ball_amount.reset()
-    ball_radius.reset()
-
-    // bubbles
-    bubble_amount.reset()
-    bubble_radius_range.reset()
-    bubble_value_range.reset()
-
-    // multipliers
-    hits_multiplier.reset()
-    streak_multiplier.reset()
-    balls_left_multiplier.reset()
-    total_multiplier.reset()
-}
-
-// reset progress
-function reset() {
-    wait_for_reset = true
-    initialize_values()
-    wait_for_reset = false
-    switch_to_screen(0)
-    start_round()
-}
-
 // start a round
 function start_round() {
-    round++
+    if (!gameover) round++
 
     ball_start = {
         x: width / 2,
@@ -109,22 +75,23 @@ function start_round() {
 // insert score and add to points
 function insert_score() {
     let hit_bonus = Math.round(hits_multiplier.current * hits)
-    document.querySelector('#hits .value').innerText = hit_bonus
+    document.querySelector('#hits .value').innerText = hits
     document.querySelector('#hits .multiplier').innerText = 'x' + hits_multiplier.current
+    document.querySelector('#hits .result').innerText = hit_bonus
 
-    let streak_bonus = Math.round(streak_multiplier.current * [...balls].map(b => b.hits).sort().pop())
-    document.querySelector('#streak .value').innerText = streak_bonus
+    let longest_streak = [...balls].map(b => b.hits).sort().pop()
+    let streak_bonus = Math.round(streak_multiplier.current * longest_streak)
+    document.querySelector('#streak .value').innerText = longest_streak
     document.querySelector('#streak .multiplier').innerText = 'x' + streak_multiplier.current
+    document.querySelector('#streak .result').innerText = streak_bonus
 
-    let balls_left_bonus = Math.round(balls_left_multiplier.current * balls.filter(b => !b.dead).length)
-    document.querySelector('#left .value').innerText = balls_left_bonus
-    document.querySelector('#left .multiplier').innerText = 'x' + balls_left_multiplier.current
-
-    let total = Math.floor(total_multiplier.current * (hits + streak_bonus + balls_left_bonus))
+    let total = hit_bonus + streak_bonus
+    let total_bonus = Math.round(total_multiplier.current * total)
     document.querySelector('#total .value').innerText = total
     document.querySelector('#total .multiplier').innerText = 'x' + total_multiplier.current
+    document.querySelector('#total .result').innerText = total_bonus
 
-    points += total
+    points += total_bonus
 
     document.querySelector('#points').innerText = points
 }
@@ -197,7 +164,7 @@ function clear() {
 
 // main rendering loop for screen=0
 function render() {
-    if (!wait_for_reset && screen === 0) requestAnimationFrame(render)
+    if (screen === 0) requestAnimationFrame(render)
     clear()
     if (balls.some(b => b.shootable)) {
         ctx.lineWidth = 2
@@ -207,7 +174,7 @@ function render() {
     bubbles.forEach(b => b.draw())
     draw_ball_count()
     if (show_fps) draw_fps()
-    draw_round()
+    if (!gameover) draw_round()
 }
 
 // end a round
@@ -221,7 +188,20 @@ function check_done() {
     if (!balls.some(b => !b.dead) || !bubbles.some(b => b.value > 0)) end_round()
 }
 
-// 0: game, 1: score, 2: upgrade
+// check if game is over
+function check_gameover() {
+    // switch to game over screen if not gameover yet and all upgrades maxed
+    if (![gravity, bounce, aim_radius, ball_radius,
+        ball_amount, bubble_amount, bubble_radius_range,
+        bubble_value_range, hits_multiplier,
+        streak_multiplier, total_multiplier].some(u => u.maxed === false)) {
+        document.querySelector('#rounds').innerText = round
+        switch_to_screen(3)
+        gameover = true
+    }
+}
+
+// 0: game, 1: score, 2: upgrade, 3: gameover
 function switch_to_screen(n) {
     screen = n
     container.setAttribute('screen', n)
@@ -230,4 +210,5 @@ function switch_to_screen(n) {
     }
 }
 
+// start
 setup()

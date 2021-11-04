@@ -1,5 +1,4 @@
 function random_i(min, max) {
-    console.log()
     if (min == max) return min
     return Math.round(min + Math.random() * (max - min))
 }

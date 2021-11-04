@@ -14,7 +14,7 @@ class Bubble extends Circle {
         let y = random_i((ball_radius.current + ball_start.y) + radius + bubble_field_distance, height - radius)
         super(x, y, radius)
         this.value = value
-        this.color = bubble_colors[random_i(0, bubble_colors.length)]
+        this.color = bubble_colors[random_i(0, bubble_colors.length - 1)]
     }
 
     draw() {
@@ -24,10 +24,11 @@ class Bubble extends Circle {
             ctx.lineWidth = 2
             ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI)
             ctx.stroke()
+            ctx.closePath()
             ctx.fillStyle = this.color
             ctx.font = (this.radius * .8) + 'px Arial'
             ctx.textAlign = 'center'
-            ctx.fillText(this.value, this.position.x, this.position.y)
+            ctx.fillText(this.value, this.position.x, this.position.y + (this.radius * .2))
             balls.forEach(b => this.check_ball_collision(b))
         }
     }

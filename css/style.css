@@ -15,19 +15,14 @@
 }
 
 body {
+	padding: 0;
+	margin: 0;
 	font-family: Arial, Helvetica, sans-serif;
 	text-align: center;
 	background-color: var(--col-primary-darkest);
 	color: var(--col-primary);
 	user-select: none;
 	color: var(--col-text);
-}
-
-h1 {
-	font-size: 2.5em;
-	font-weight: 900;
-	color: var(--col-accent);
-	text-shadow: 2px 2px var(--col-accent-2);
 }
 
 game {
@@ -56,7 +51,8 @@ screen {
 
 game[screen='0'] canvas,
 game[screen='1'] screen[value='1'],
-game[screen='2'] screen[value='2'] {
+game[screen='2'] screen[value='2'],
+game[screen='3'] screen[value='3'] {
 	display: block;
 	margin: auto;
 }
@@ -134,15 +130,22 @@ upgrade {
 screen[value='1'] .value {
 	color: var(--col-accent-2);
 	font-size: 1.5em;
-	margin-right: 1em;
+	margin-right: 0.5em;
+}
+
+screen[value='1'] .multiplier {
+	color: var(--col-accent);
+	margin-right: 0.5em;
+}
+
+screen[value='1'] .result {
+	color: var(--col-accent-2);
+	font-size: 1.5em;
+	margin-left: 1em;
 }
 
 upgrade .value {
 	display: inline;
-}
-
-.multiplier {
-	color: var(--col-accent);
 }
 
 h2 {

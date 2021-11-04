@@ -55,11 +55,11 @@ class Ball extends Circle {
             this.position.x = width - this.radius
             this.speed.x = -this.speed.x * bounce.current
         } else if (this.position.x < this.radius) {
-            this.position.x = this.radius
+            this.position.x = this.radius + 1
             this.speed.x = -this.speed.x * bounce.current
         }
         if (this.position.y < this.radius) {
-            this.position.y = this.radius
+            this.position.y = this.radius + 1
             this.speed.y = -this.speed.y * bounce.current
         } else if (this.position.y > height + (this.radius * 2)) {
             this.dead = true

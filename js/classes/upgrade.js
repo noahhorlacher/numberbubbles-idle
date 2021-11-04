@@ -4,6 +4,7 @@ class Upgradeable {
         this.upgrades = upgrades
         this.level = 0
         this.upgrade_name = upgrade_name
+        this.maxed = false
 
         // inject into upgrade screen
         let container_upgrades = document.querySelector('upgrades')
@@ -30,20 +31,24 @@ class Upgradeable {
 
     upgrade() {
         // upgrade if not maxed out and enough cash
-        if (this.level < this.upgrades.length - 1) {
-            if (this.upgrades[this.level + 1].buy()) {
-                // successfully bought
-                this.level++
-                this.current = this.upgrades[this.level].value
-                if (this.level + 1 < this.upgrades.length) this.btn_upgrade.innerText = `${this.current.toString()} > ${this.upgrades[this.level + 1].value.toString()} (${this.upgrades[this.level].price} Points)`
-                else {
-                    this.btn_upgrade.innerText = `${this.current.toString()} (MAXED)`
-                    this.btn_upgrade.setAttribute('disabled', true)
-                }
-                this.title_upgrade.innerText = `${this.upgrade_name} (${this.level + 1}/${this.upgrades.length})`
+        if (!this.maxed && this.upgrades[this.level + 1].price <= points) {
+            // successfully bought
+            points -= this.upgrades[this.level + 1].price
+            this.level++
+            this.current = this.upgrades[this.level].value
 
-                document.querySelector('#points').innerText = points
+            // if not maxed, show next upgrade on button
+            if (this.level < this.upgrades.length - 1) this.btn_upgrade.innerText = `${this.current.toString()} > ${this.upgrades[this.level + 1].value.toString()} (${this.upgrades[this.level + 1].price} Points)`
+            // else show maxed and disable
+            else {
+                this.btn_upgrade.innerText = `${this.current.toString()} (MAXED)`
+                this.btn_upgrade.setAttribute('disabled', true)
+                this.maxed = true
+                if (!gameover) check_gameover()
             }
+            this.title_upgrade.innerText = `${this.upgrade_name} (${this.level + 1}/${this.upgrades.length})`
+
+            document.querySelector('#points').innerText = points
         }
     }
 }
@@ -52,13 +57,5 @@ class Upgrade {
     constructor(value, price) {
         this.value = value
         this.price = price
-    }
-
-    buy() {
-        if (points >= this.price) {
-            points -= this.price
-            return true
-        }
-        return false
     }
 }

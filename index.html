@@ -5,22 +5,34 @@
     <meta charset='UTF-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>ナンバー バッブース</title>
+    <title>Number Bubbles Idle</title>
     <link rel='stylesheet' href='css/slider.css'>
     <link rel='stylesheet' href='css/style.css'>
 </head>
 
 <body>
-    <h1>ナンバー バッブース</h1>
     <game>
         <screen value='1'>
             <h2>Result</h2>
-            <p id='hits'><span class='score'>Hits:</span><span class='value'></span><span class='multiplier'></span></p>
-            <p id='streak'><span class='score'>Longest Streak:</span><span class='value'></span><span
-                    class='multiplier'></span></p>
-            <p id='left'><span class='score'>Balls Left:</span><span class='value'></span><span
-                    class='multiplier'></span></p>
-            <p id='total'><span class='score'>Total:</span><span class='value'></span><span class='multiplier'></span>
+            <p id='hits'>
+                <span class='score'>Hits:</span>
+                <span class='value'></span>
+                <span class='multiplier'></span>
+                =
+                <span class='result'></span>
+            </p>
+            <p id='streak'>
+                <span class='score'>Longest Streak:</span>
+                <span class='value'></span>
+                <span class='multiplier'></span>
+                =
+                <span class='result'></span>
+            </p>
+            <p id='total'><span class='score'>Total:</span>
+                <span class='value'></span>
+                <span class='multiplier'></span>
+                =
+                <span class='result'></span>
             </p>
             <btns>
                 <btn id='btn_to_upgrades'>To Upgrades</btn>
@@ -29,15 +41,21 @@
         <screen value='2'>
             <h2>Upgrades</h2>
             <p>Points: <span id='points'></span></p>
-            <upgrades></upgrades>
             <btns>
                 <btn id='btn_to_score'>Score</btn>
                 <btn id='btn_next_round'>Next Round</btn>
             </btns>
+            <upgrades></upgrades>
+        </screen>
+        <screen value='3'>
+            <h2>You finished the game in <span id='rounds'>0</span> rounds!</h2>
+            <btns>
+                <btn id='btn_restart'>Restart</btn>
+                <btn id='btn_continue'>Continue</btn>
+            </btns>
+            <upgrades></upgrades>
         </screen>
     </game>
-    <br><br>
-    <btn id='reset'>リースタート</btn>
     <script src='js/helpers.js'></script>
     <script src='js/classes/upgrade.js'></script>
     <script src='js/classes/range.js'></script>
