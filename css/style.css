@@ -45,7 +45,7 @@ canvas.canshoot {
 screen {
 	color: var(--col-text-light);
 	box-sizing: border-box;
-	padding: 10%;
+	padding: 2em 4em;
 	background-color: var(--col-primary);
 }
 
