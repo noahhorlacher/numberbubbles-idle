@@ -81,6 +81,8 @@ screen[value='1'] btns {
 }
 
 btn {
+	width: 100%;
+	box-sizing: border-box;
 	cursor: pointer;
 	display: block;
 	background-color: var(--col-text);
