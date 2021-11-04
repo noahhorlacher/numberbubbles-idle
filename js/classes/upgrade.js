@@ -37,18 +37,20 @@ class Upgradeable {
             this.level++
             this.current = this.upgrades[this.level].value
 
+
             // if not maxed, show next upgrade on button
             if (this.level < this.upgrades.length - 1) this.btn_upgrade.innerText = `${this.current.toString()} > ${this.upgrades[this.level + 1].value.toString()} (${this.upgrades[this.level + 1].price} Points)`
             // else show maxed and disable
             else {
                 this.btn_upgrade.innerText = `${this.current.toString()} (MAXED)`
-                this.btn_upgrade.setAttribute('disabled', true)
                 this.maxed = true
                 if (!gameover) check_gameover()
             }
             this.title_upgrade.innerText = `${this.upgrade_name} (${this.level + 1}/${this.upgrades.length})`
 
             document.querySelector('#points').innerText = points
+
+            update_upgrade_buttons()
         }
     }
 }

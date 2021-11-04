@@ -22,7 +22,14 @@ function setup() {
     total_multiplier.reset()
 
     // screen buttons
-    document.querySelector('#btn_to_upgrades').addEventListener('click', e => switch_to_screen(2))
+    document.querySelector('#btn_to_upgrades').addEventListener('click', e => {
+        if (!gameover) {
+            update_upgrade_buttons()
+            switch_to_screen(2)
+        } else {
+            switch_to_screen(0)
+        }
+    })
 
     document.querySelector('#btn_to_score').addEventListener('click', e => switch_to_screen(1))
     document.querySelector('#btn_next_round').addEventListener('click', e => switch_to_screen(0))
@@ -183,6 +190,16 @@ function end_round() {
     switch_to_screen(1)
 }
 
+// disable buttons for maxed or unbuyable upgrades
+function update_upgrade_buttons() {
+    [gravity, bounce, aim_radius, ball_radius,
+        ball_amount, bubble_amount, bubble_radius_range,
+        bubble_value_range, hits_multiplier,
+        streak_multiplier, total_multiplier].forEach(u => {
+            u.btn_upgrade.setAttribute('disabled', u.maxed || u.upgrades[u.level + 1].price > points)
+        })
+}
+
 // check if round is over
 function check_done() {
     if (!balls.some(b => !b.dead) || !bubbles.some(b => b.value > 0)) end_round()
@@ -198,6 +215,7 @@ function check_gameover() {
         document.querySelector('#rounds').innerText = round
         switch_to_screen(3)
         gameover = true
+        document.querySelector('#btn_to_upgrades').innerText = 'Next Round'
     }
 }
 
